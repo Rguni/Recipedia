@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Recipedia</string>
+    <string name="action_recipe_1">Recipe 1</string>
+    <string name="action_recipe_2">Recipe 2</string>
+    <string name="action_recipe_3">Recipe 3</string>
+    <string name="action_recipe_4">Recipe 4</string>
+</resources>
