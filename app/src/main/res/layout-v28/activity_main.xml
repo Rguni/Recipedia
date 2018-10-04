@@ -18,5 +18,9 @@
         android:text="Your choice?"
         android:textSize="100dp"
         android:textStyle="bold" />
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
     </ScrollView>
 </android.support.constraint.ConstraintLayout>

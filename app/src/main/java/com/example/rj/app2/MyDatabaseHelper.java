@@ -7,12 +7,15 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import java.sql.Blob;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 
 
 public class MyDatabaseHelper extends SQLiteOpenHelper {
 
-    private static final String TAG = "SQLite";
+    private static final String TAG = MyDatabaseHelper.class.getSimpleName();
 
     // Database Version
     private static final int DATABASE_VERSION = 1;
@@ -26,23 +29,36 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_DISHES_ID ="Dishes_Id";
     private static final String COLUMN_DISHES_NAME ="Dishes_Name";
     private static final String COLUMN_DISHES_DESCRIPTION = "Dishes_Description";
-    private static final Blob COLUMN_DISHES_PICTURE = null;
+    private static final String COLUMN_DISHES_PICTURE = "Dishes_Picture";
+
+    private String IMAGEURL = "http://stjamesandleo.org/wp-content/uploads/2016/11/Pancakes-450x450.jpg";
+    private byte[] Image,ImageBlob;
+
+    SQLiteDatabase db;
 
     public MyDatabaseHelper(Context context)  {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this.getWritableDatabase();
     }
 
     // Create table
     @Override
     public void onCreate(SQLiteDatabase db) {
+        this.db = db;
         Log.i(TAG, "MyDatabaseHelper.onCreate ... ");
         // Script.
         String script = "CREATE TABLE " + TABLE_DISHES + "("
-                + COLUMN_DISHES_ID + " INTEGER PRIMARY KEY," + COLUMN_DISHES_NAME + " TEXT,"
-                + COLUMN_DISHES_DESCRIPTION + " TEXT" + COLUMN_DISHES_PICTURE + " BLOB" + ")";
+                + COLUMN_DISHES_ID + " INTEGER PRIMARY KEY, " + COLUMN_DISHES_NAME + " TEXT, "
+                + COLUMN_DISHES_DESCRIPTION + " TEXT, " + COLUMN_DISHES_PICTURE + " BLOB" + ")";
         // Execute Script.
         db.execSQL(script);
-        createRecipe(db);
+        GetImageFromInt getimage = new GetImageFromInt(this);
+        getimage.execute(IMAGEURL);
+//        try {
+//            createRecipe(db);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
 
 
@@ -57,52 +73,83 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+//    public byte[] ImageFromUrl() throws Exception {
+//        URL url = new URL(IMAGEURL);
+//        ByteArrayOutputStream output = new ByteArrayOutputStream();
+//
+//        try {
+//            InputStream inputStream = url.openStream();
+//            int n = 0;
+//            byte [] buffer = new byte[ 1024 ];
+//            while (-1 != (n = inputStream.read(buffer))) {
+//                output.write(buffer, 0, n);
+//            }
+//        }
+//    catch (IOException i ){}
+//
+//        return output.toByteArray();
+//    }
+ //   Image  = getLogoImage(IMAGEURL);
 
-    // If Note table has no data
-    // default, Insert 2 records.
-    public void createRecipe(SQLiteDatabase db)  {
+    // If Dishes table has no data
+    // default, Insert n records.
+    public void createRecipe(byte[] image) throws Exception {
             Recipe recipe1 = new Recipe(10001, "Pancakes",
-                    "Pancakes can be salt or sweet", null);
+                    "Pancakes can be salt or sweet", image);
             Recipe recipe2 = new Recipe(10002, "Chicken Soup",
-                    "Get prepared from dead chicken", null);
+                    "Get prepared from dead chicken", image);
             Recipe recipe3 = new Recipe(10003, "Fried chicken",
-                    "Get prepared from dead chicken", null);
-            this.addRecipe(recipe1, db);
-            this.addRecipe(recipe2, db);
-            this.addRecipe(recipe3, db);
+                    "Get prepared from dead chicken", image);
+            this.addRecipe(recipe1);
+            this.addRecipe(recipe2);
+            this.addRecipe(recipe3);
     }
 
 
-    public void addRecipe(Recipe recipe, SQLiteDatabase db) {
+    public void addRecipe(Recipe recipe) throws Exception {
         Log.i(TAG, "MyDatabaseHelper.addRecipe ... " + recipe.getDishes_Name());
         ContentValues values = new ContentValues();
         values.put(COLUMN_DISHES_ID, recipe.getRecipeId());
         values.put(COLUMN_DISHES_NAME, recipe.getDishes_Name());
         values.put(COLUMN_DISHES_DESCRIPTION, recipe.getDishes_Description());
-
+        values.put(COLUMN_DISHES_PICTURE, recipe.getDishes_Picture());
         // Inserting Row
         db.insert(TABLE_DISHES, null, values);
-
-        // Closing database connection
     }
 
-
-    public Recipe getRecipe(int id) {
-        Log.i(TAG, "MyDatabaseHelper.getNote ... " + id);
+     public Recipe getRecipe(int id) {
+        Log.i(TAG, "MyDatabaseHelper.getDishes ... " + id);
 
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(TABLE_DISHES, new String[] {COLUMN_DISHES_ID,
-                        COLUMN_DISHES_NAME, COLUMN_DISHES_DESCRIPTION}, COLUMN_DISHES_ID + "=?",
+                        COLUMN_DISHES_NAME, COLUMN_DISHES_DESCRIPTION, COLUMN_DISHES_PICTURE}, COLUMN_DISHES_ID + "=?",
                 new String[] { String.valueOf(id) }, null, null, null, null);
         if (cursor != null)
             cursor.moveToFirst();
 
         Recipe recipe = new Recipe(Integer.parseInt(cursor.getString(0)),
-                cursor.getString(1), cursor.getString(2), null);
-        // return note
+                cursor.getString(1), cursor.getString(2), cursor.getBlob(3));
+
+
         return recipe;
     }
+
+//    public Bitmap loadIcon(long iconId) {
+//        // Prepare the cursor to read from database....
+//        byte[] bitmapData = recipegetBlob(cursor.getColumnIndex(TABLE_DISHES.COLUMN_DISHES_PICTURE));
+//
+//        return BitmapFactory.decodeByteArray(bitmapData, 0, bitmapData.length);
+//    }
+//
+//    byte[] bitmapData = cursor.getBlob(cursor.getColumnIndex(Columns.Icons.DATA))
+
+//    storedItem.setImageBitmap(BitmapFactory.decodeByteArray(blob, 0, blob.length));
+//
+//            Log.i("RETURN TRUE BLOB",cursor.getString(3));
+
+
+
 
 
 //    public List<Note> getAllNotes() {
