@@ -1,28 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
-    <ImageView
-        android:id="@+id/imageView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentStart="true"/>
+    tools:context=".MainActivity"
+    android:orientation="vertical">
+
+
 
     <ScrollView android:id="@+id/ScrollView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingTop="6dp">
+        android:layout_height="wrap_content">
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Your choice?"
-        android:textSize="20dp"/>
+        android:textSize="20sp"/>
     </ScrollView>
 
-</android.support.constraint.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center">
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Search for a recipe"
+            android:textSize="16sp"/>
+        <EditText
+            android:layout_width="185dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/searchWordToSend"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:padding="10dp">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Enter"
+            android:onClick="onSearchButtonClicked"/>
+
+        <TextView
+            android:id="@+id/call_activity_info_txt_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="xxxx"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center|top"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Show all recipes"
+            android:textSize="16sp"
+            />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Menu"
+            android:onClick="onMenuButtonClicked"/>
+    </LinearLayout>
+
+</LinearLayout>

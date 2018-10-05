@@ -16,5 +16,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".MenuScreen"
+            android:label="Recipe Menu"
+            android:theme="@style/AppTheme"></activity>
+        <activity android:name=".SearchScreen"
+            android:label="Recipe Search"
+            android:theme="@style/AppTheme"></activity>
     </application>
 </manifest>
