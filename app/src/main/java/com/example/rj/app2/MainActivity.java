@@ -1,12 +1,14 @@
 package com.example.rj.app2;
 
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
@@ -34,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         final TextView infoTextView = (TextView) findViewById(R.id.textView);
-
+        final ImageView infoImageView = (ImageView) findViewById(R.id.imageView1);
         // Операции для выбранного пункта меню
         switch (id) {
             case R.id.action_recipe_1:
@@ -45,8 +47,10 @@ public class MainActivity extends AppCompatActivity {
                         Recipe recipe1 = helper.getRecipe(10001);
                         String Recipe1 = recipe1.getDishes_Name();
                         String Recipe2 = recipe1.getDishes_Description();
-//                            byte[] Recipe3 = recipe1.getDishes_Picture();
+                          byte[] Recipe3 = recipe1.getDishes_Picture();
                         infoTextView.setText(Recipe1 + "\n" + Recipe2);
+                            infoImageView.setImageBitmap(BitmapFactory.decodeByteArray(Recipe3,
+                                    0, Recipe3.length));
                         return false;
                         }
 //                });//recipe.getRecipe();

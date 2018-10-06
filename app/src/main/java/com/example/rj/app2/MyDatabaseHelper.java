@@ -27,15 +27,18 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     // Table name: Note.
     private static final String TABLE_DISHES = "Dishes";
 
+    SQLiteDatabase db;
+
     public MyDatabaseHelper(Context context)  {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this.getWritableDatabase();
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        // Create table "Dishes" in database
+        this.db = db;
         db.execSQL(Recipe.CREATE_TABLE);
-        createRecipe(db);
+        createRecipe();
 
 //        GetImageFromInt getimage = new GetImageFromInt(this);
 //        getimage.execute(Recipe.IMAGEURL);
@@ -51,25 +54,29 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    //Insert records in the table.
+    public void createRecipe() {
+        Recipe recipe1 = new Recipe(10001, "Pancakes",
+                "Pancakes can be salt or sweet",
+                "http://stjamesandleo.org/wp-content/uploads/2016/11/Pancakes-450x450.jpg",
+                null);
+        GetImageFromInt getimage1 = new GetImageFromInt(this);
+        getimage1.execute(recipe1);
 
-
-
-    // If Note table has no data
-    // default, Insert 2 records.
-    public void createRecipe(SQLiteDatabase db)  {
-            Recipe recipe1 = new Recipe(10001, "Pancakes",
-                    "Pancakes can be salt or sweet", null);
-            Recipe recipe2 = new Recipe(10002, "Chicken Soup",
-                    "Get prepared from dead chicken", null);
-            Recipe recipe3 = new Recipe(10003, "Fried chicken",
-                    "Get prepared from dead chicken", null);
-            this.addRecipe(recipe1, db);
-            this.addRecipe(recipe2, db);
-            this.addRecipe(recipe3, db);
+        Recipe recipe2 = new Recipe(10002, "Chicken Soup",
+                "Get prepared from dead chicken",
+                "http://stjamesandleo.org/wp-content/uploads/2016/11/Pancakes-450x450.jpg", null);
+        GetImageFromInt getimage2 = new GetImageFromInt(this);
+        getimage2.execute(recipe2);
+        Recipe recipe3 = new Recipe(10003, "Fried chicken",
+                "Get prepared from dead chicken",
+                "http://stjamesandleo.org/wp-content/uploads/2016/11/Pancakes-450x450.jpg", null);
+        GetImageFromInt getimage3 = new GetImageFromInt(this);
+        getimage3.execute(recipe3);
     }
 
 
-    public void addRecipe(Recipe recipe, SQLiteDatabase db) {
+    public void addRecipe(Recipe recipe) {
 
         //get writable DB connection, as we want to put data into DB
         //SQLiteDatabase db = this.getWritableDatabase();
@@ -78,15 +85,14 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         values.put(Recipe.COLUMN_DISHES_ID, recipe.getRecipeId());
         values.put(Recipe.COLUMN_DISHES_NAME, recipe.getDishes_Name());
         values.put(Recipe.COLUMN_DISHES_DESCRIPTION, recipe.getDishes_Description());
-
-        // TODO just placeholder for inserting a picture to database
-        //values.put(Recipe.COLUMN_DISHES_PICTURE, recipe.getDishes_Picture());
+        values.put(Recipe.COLUMN_PICTURE_URL, recipe.getPicture_Url());
+        values.put(Recipe.COLUMN_DISHES_PICTURE, recipe.getDishes_Picture());
 
         // Inserting Row
         db.insert(TABLE_DISHES, null, values);
 
         // Closing database connection
-       // db.close();
+        // db.close();
 
     }
 
@@ -97,7 +103,9 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(Recipe.TABLE_NAME,
-                new String[] {Recipe.COLUMN_DISHES_ID, Recipe.COLUMN_DISHES_NAME, Recipe.COLUMN_DISHES_DESCRIPTION},
+                new String[] {Recipe.COLUMN_DISHES_ID, Recipe.COLUMN_DISHES_NAME,
+                        Recipe.COLUMN_DISHES_DESCRIPTION, Recipe.COLUMN_PICTURE_URL,
+                        Recipe.COLUMN_DISHES_PICTURE},
                 Recipe.COLUMN_DISHES_ID + "=?",
                 new String[] { String.valueOf(id) }, null, null, null, null);
 
@@ -109,7 +117,8 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
                 cursor.getInt(cursor.getColumnIndex(Recipe.COLUMN_DISHES_ID)),
                 cursor.getString(cursor.getColumnIndex(Recipe.COLUMN_DISHES_NAME)),
                 cursor.getString(cursor.getColumnIndex(Recipe.COLUMN_DISHES_DESCRIPTION)),
-                null);
+                cursor.getString(cursor.getColumnIndex(Recipe.COLUMN_PICTURE_URL)),
+                cursor.getBlob(cursor.getColumnIndex(Recipe.COLUMN_DISHES_PICTURE)));
         // return note
         return recipe;
     }
@@ -153,8 +162,8 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
         List<Recipe> recipes = new ArrayList<>();
         String searchQuery = "SELECT * FROM " + Recipe.TABLE_NAME
-                            +" WHERE " + Recipe.COLUMN_DISHES_NAME
-                            +" LIKE '%" + searchWord + "%'";
+                +" WHERE " + Recipe.COLUMN_DISHES_NAME
+                +" LIKE '%" + searchWord + "%'";
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(searchQuery, null);
@@ -177,9 +186,9 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
                 recipe.setRecipeId(cursor.getInt(cursor.getColumnIndex(Recipe.COLUMN_DISHES_ID)));
                 recipe.setDishes_Name(cursor.getString(cursor.getColumnIndex(Recipe.COLUMN_DISHES_NAME)));
                 recipe.setDishes_Description(cursor.getString(cursor.getColumnIndex(Recipe.COLUMN_DISHES_DESCRIPTION)));
-
+                recipe.setPicture_Url(cursor.getString(cursor.getColumnIndex(Recipe.COLUMN_PICTURE_URL)));
                 // TODO create Blob transfer method
-                // recipe.setDishes_Picture(cursor.getBlob(cursor.getColumnIndex(Recipe.COLUMN_DISHES_PICTURE)));
+                recipe.setDishes_Picture(cursor.getBlob(cursor.getColumnIndex(Recipe.COLUMN_DISHES_PICTURE)));
                 recipeList.add(recipe);
             }while (cursor.moveToNext());
         }
