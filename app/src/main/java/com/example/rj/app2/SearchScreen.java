@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -19,6 +21,9 @@ public class SearchScreen extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.searchscreen_layout);
 
+        //intent to open new recipe
+        final Intent sendRecipeIntent = new Intent(this, RecipeScreen.class);
+
         myHelper = new MyDatabaseHelper(this);
 
         //put search request on screen
@@ -29,8 +34,8 @@ public class SearchScreen extends Activity {
         searchMemo.setText("You searched for "+wordToPut);
 
         //populate search screen with list of of recipes
-        ListView listView = (ListView) findViewById(R.id.searchListView);
-        List<Recipe> recipeList = myHelper.searchWordRecipe(wordToPut);
+        final ListView listView = (ListView) findViewById(R.id.searchListView);
+        final List<Recipe> recipeList = myHelper.searchWordRecipe(wordToPut);
         if(wordToPut.isEmpty()||recipeList.isEmpty()){
             Toast.makeText(SearchScreen.this,"There no items for your search",Toast.LENGTH_LONG).show();
         }else {
@@ -41,7 +46,25 @@ public class SearchScreen extends Activity {
                     recipeList);
 
             listView.setAdapter(arrayAdapter);
+
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                    String thingsPicked = "You selected " + String.valueOf(parent.getItemAtPosition(position));
+
+                    Toast.makeText(SearchScreen.this, thingsPicked, Toast.LENGTH_SHORT).show();
+
+                    sendRecipeIntent.putExtra("Recipe", recipeList.get(position));
+
+                    startActivityForResult(sendRecipeIntent, 1);
+
+
+                }
+            });
         }
+
+
 
 
     }

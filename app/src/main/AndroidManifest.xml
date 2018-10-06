@@ -22,5 +22,8 @@
         <activity android:name=".SearchScreen"
             android:label="Recipe Search"
             android:theme="@style/AppTheme"></activity>
+        <activity android:name=".RecipeScreen"
+            android:label="Recipe Screen"
+            android:theme="@style/AppTheme"></activity>
     </application>
 </manifest>

@@ -12,6 +12,7 @@
         android:paddingTop="8dp"
         android:textSize="25sp"
         android:gravity="center"
+        android:id="@+id/recipe_title"
         />
 
     <LinearLayout

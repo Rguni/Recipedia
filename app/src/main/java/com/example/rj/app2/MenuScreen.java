@@ -1,6 +1,7 @@
 package com.example.rj.app2;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -22,10 +23,13 @@ public class MenuScreen extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu_layout);
 
+        //intent to open new recipe
+        final Intent sendRecipeIntent = new Intent(this, RecipeScreen.class);
+
         myHelper = new MyDatabaseHelper(this);
 
-        ListView listView = (ListView) findViewById(R.id.myListView);
-        List<Recipe> recipeList = myHelper.getAllRecipes();
+        final ListView listView = (ListView) findViewById(R.id.myListView);
+        final List<Recipe> recipeList = myHelper.getAllRecipes();
 
         //populate search screen with list of of recipes
 
@@ -44,6 +48,9 @@ public class MenuScreen extends Activity {
                 String thingsPicked = "You selected " + String.valueOf(parent.getItemAtPosition(position));
 
                 Toast.makeText(MenuScreen.this, thingsPicked, Toast.LENGTH_SHORT).show();
+                sendRecipeIntent.putExtra("Recipe", recipeList.get(position));
+
+                startActivityForResult(sendRecipeIntent, 1);
             }
         });
 
