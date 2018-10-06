@@ -1,6 +1,7 @@
 package com.example.rj.app2;
 import java.io.Serializable;
 import java.sql.Blob;
+import java.util.List;
 
 
 public class Recipe implements Serializable {
@@ -15,16 +16,15 @@ public class Recipe implements Serializable {
     public static final String COLUMN_DISHES_ID ="Dishes_Id";
     public static final String COLUMN_DISHES_NAME ="Dishes_Name";
     public static final String COLUMN_DISHES_DESCRIPTION = "Dishes_Description";
+    public static final String COLUMN_DISHES_INGREDIENTS = "Dishes_Ingredients";
     public static final String COLUMN_PICTURE_URL = "Picture_Url";
     public static final String COLUMN_DISHES_PICTURE = "Dishes_Picture";
-
-    public static final String IMAGEURL = "http://stjamesandleo.org/wp-content/uploads/2016/11/Pancakes-450x450.jpg";
-
 
     // Class related values
     private int Dishes_ID;
     private String Dishes_Name;
     private String Dishes_Description;
+    private List<String> Dishes_Ingredients;
     private String Picture_Url;
     private byte[] Dishes_Picture;
 
@@ -35,6 +35,7 @@ public class Recipe implements Serializable {
                     + COLUMN_DISHES_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                     + COLUMN_DISHES_NAME + " TEXT, "
                     + COLUMN_DISHES_DESCRIPTION + " TEXT, "
+                    + COLUMN_DISHES_INGREDIENTS + " TEXT, "
                     + COLUMN_PICTURE_URL + " TEXT, "
                     + COLUMN_DISHES_PICTURE + " BLOB"
                     + ")";
@@ -42,17 +43,21 @@ public class Recipe implements Serializable {
     public Recipe()  {
     }
 
-    public Recipe(String Dishes_Name, String Dishes_Description, String Picture_Url, byte[] Dishes_Picture) {
+    public Recipe(String Dishes_Name, String Dishes_Description, List<String> Dishes_Ingredients,
+                  String Picture_Url, byte[] Dishes_Picture) {
         this.Dishes_Name = Dishes_Name;
         this.Dishes_Description = Dishes_Description;
+        this.Dishes_Ingredients = Dishes_Ingredients;
         this.Picture_Url = Picture_Url;
         this.Dishes_Picture = Dishes_Picture;
     }
 
-    public Recipe(int Dishes_ID, String Dishes_Name, String Dishes_Description, String Picture_Url, byte[] Dishes_Picture) {
+    public Recipe(int Dishes_ID, String Dishes_Name, String Dishes_Description,
+                  List<String> Dishes_Ingredients, String Picture_Url, byte[] Dishes_Picture) {
         this.Dishes_ID = Dishes_ID;
         this.Dishes_Name = Dishes_Name;
         this.Dishes_Description = Dishes_Description;
+        this.Dishes_Ingredients = Dishes_Ingredients;
         this.Picture_Url = Picture_Url;
         this.Dishes_Picture  = Dishes_Picture;
     }
@@ -79,6 +84,13 @@ public class Recipe implements Serializable {
         this.Dishes_Description = dishes_Description;
     }
 
+    public List<String> getDishes_Ingredients() {
+        return Dishes_Ingredients;
+    }
+    public void setDishes_Ingredients(List<String> dishes_Ingredients) {
+        this.Dishes_Ingredients = Dishes_Ingredients;
+    }
+
     public String getPicture_Url() {
         return Picture_Url;
     }
@@ -86,13 +98,8 @@ public class Recipe implements Serializable {
         this.Picture_Url = Picture_Url;
     }
 
-    public byte[] getDishes_Picture() {
-        return Dishes_Picture;
-    }
-    public void setDishes_Picture(byte[] dishes_Picture) {
-
-        Dishes_Picture = dishes_Picture;
-    }
+    public byte[] getDishes_Picture() { return Dishes_Picture; }
+    public void setDishes_Picture(byte[] dishes_Picture) { Dishes_Picture = dishes_Picture; }
 
     @Override
     public String toString()  {

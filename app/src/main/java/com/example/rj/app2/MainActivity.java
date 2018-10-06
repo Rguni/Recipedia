@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
 //                    public boolean onMenuItemClick(MenuItem item)
                         {
                         Recipe recipe1 = helper.getRecipe(10001);
-                        String Recipe1 = recipe1.getDishes_Name();
+                        String Recipe1 = recipe1.getDishes_Ingredients().toString();
                         String Recipe2 = recipe1.getDishes_Description();
                           byte[] Recipe3 = recipe1.getDishes_Picture();
                         infoTextView.setText(Recipe1 + "\n" + Recipe2);

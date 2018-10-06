@@ -10,6 +10,7 @@ import android.util.Log;
 
 import java.sql.Blob;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -39,9 +40,6 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         this.db = db;
         db.execSQL(Recipe.CREATE_TABLE);
         createRecipe();
-
-//        GetImageFromInt getimage = new GetImageFromInt(this);
-//        getimage.execute(Recipe.IMAGEURL);
     }
 
 
@@ -57,19 +55,19 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     //Insert records in the table.
     public void createRecipe() {
         Recipe recipe1 = new Recipe(10001, "Pancakes",
-                "Pancakes can be salt or sweet",
+                "Pancakes can be salt or sweet", Arrays.asList("eggs 3, not 4"),
                 "http://stjamesandleo.org/wp-content/uploads/2016/11/Pancakes-450x450.jpg",
                 null);
         GetImageFromInt getimage1 = new GetImageFromInt(this);
         getimage1.execute(recipe1);
 
         Recipe recipe2 = new Recipe(10002, "Chicken Soup",
-                "Get prepared from dead chicken",
+                "Get prepared from dead chicken",Arrays.asList("eggs 3, not 4"),
                 "http://stjamesandleo.org/wp-content/uploads/2016/11/Pancakes-450x450.jpg", null);
         GetImageFromInt getimage2 = new GetImageFromInt(this);
         getimage2.execute(recipe2);
         Recipe recipe3 = new Recipe(10003, "Fried chicken",
-                "Get prepared from dead chicken",
+                "Get prepared from dead chicken",Arrays.asList("eggs 3, not 4"),
                 "http://stjamesandleo.org/wp-content/uploads/2016/11/Pancakes-450x450.jpg", null);
         GetImageFromInt getimage3 = new GetImageFromInt(this);
         getimage3.execute(recipe3);
@@ -85,6 +83,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         values.put(Recipe.COLUMN_DISHES_ID, recipe.getRecipeId());
         values.put(Recipe.COLUMN_DISHES_NAME, recipe.getDishes_Name());
         values.put(Recipe.COLUMN_DISHES_DESCRIPTION, recipe.getDishes_Description());
+        values.put(Recipe.COLUMN_DISHES_INGREDIENTS, listToCsv(recipe.getDishes_Ingredients(),','));
         values.put(Recipe.COLUMN_PICTURE_URL, recipe.getPicture_Url());
         values.put(Recipe.COLUMN_DISHES_PICTURE, recipe.getDishes_Picture());
 
@@ -103,8 +102,11 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(Recipe.TABLE_NAME,
-                new String[] {Recipe.COLUMN_DISHES_ID, Recipe.COLUMN_DISHES_NAME,
-                        Recipe.COLUMN_DISHES_DESCRIPTION, Recipe.COLUMN_PICTURE_URL,
+                new String[] {Recipe.COLUMN_DISHES_ID,
+                        Recipe.COLUMN_DISHES_NAME,
+                        Recipe.COLUMN_DISHES_DESCRIPTION,
+                        Recipe.COLUMN_DISHES_INGREDIENTS,
+                        Recipe.COLUMN_PICTURE_URL,
                         Recipe.COLUMN_DISHES_PICTURE},
                 Recipe.COLUMN_DISHES_ID + "=?",
                 new String[] { String.valueOf(id) }, null, null, null, null);
@@ -117,6 +119,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
                 cursor.getInt(cursor.getColumnIndex(Recipe.COLUMN_DISHES_ID)),
                 cursor.getString(cursor.getColumnIndex(Recipe.COLUMN_DISHES_NAME)),
                 cursor.getString(cursor.getColumnIndex(Recipe.COLUMN_DISHES_DESCRIPTION)),
+                Arrays.asList(cursor.getString(cursor.getColumnIndex(Recipe.COLUMN_DISHES_INGREDIENTS)).split("\\s*,\\s*")),
                 cursor.getString(cursor.getColumnIndex(Recipe.COLUMN_PICTURE_URL)),
                 cursor.getBlob(cursor.getColumnIndex(Recipe.COLUMN_DISHES_PICTURE)));
         // return note
@@ -195,6 +198,23 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
         return  recipeList;
 
+    }
+
+    String listToCsv(List<String> listOfStrings, char separator) {
+        StringBuilder sb = new StringBuilder();
+
+        // all but last
+        for(int i = 0; i < listOfStrings.size() - 1 ; i++) {
+            sb.append(listOfStrings.get(i));
+            sb.append(separator);
+        }
+
+        // last string, no separator
+        if(listOfStrings.size() > 0){
+            sb.append(listOfStrings.get(listOfStrings.size()-1));
+        }
+
+        return sb.toString();
     }
 
 }
