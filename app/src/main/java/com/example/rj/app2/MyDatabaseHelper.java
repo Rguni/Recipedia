@@ -54,9 +54,20 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
     //Insert records in the table.
     public void createRecipe() {
-        Recipe recipe1 = new Recipe(10001, "Pancakes",
-                "Pancakes can be salt or sweet", Arrays.asList("eggs 3, not 4"),
-                "http://stjamesandleo.org/wp-content/uploads/2016/11/Pancakes-450x450.jpg",
+        Recipe recipe1 = new Recipe(10001,
+                "Pancakes",
+                "1. Put 100g plain flour, 2 large eggs, 300ml milk, 1 tbsp sunflower or vegetable oil and a pinch of salt into a bowl or large jug, then whisk to a smooth batter." +
+                        "\n\n 2. Set aside for 30 mins to rest if you have time, or start cooking straight away." +
+                        "\n\n 3. Set a medium frying pan or crêpe pan over a medium heat and carefully wipe it with some oiled kitchen paper." +
+                        "\n\n 4. When hot, cook your pancakes for 1 min on each side until golden, keeping them warm in a low oven as you go." +
+                        "\n\n 5. Serve with lemon wedges and caster sugar, or your favourite filling.",
+                Arrays.asList("100g plain flour," +
+                        "2 large eggs," +
+                        "300ml milk," +
+                        "1 tbsp sunflower oil," +
+                        "Lemon wedges to serve(optional)," +
+                        "Caster sugar to serve (optional)"),
+                "https://www.bbcgoodfood.com/sites/default/files/styles/recipe/public/recipe_images/recipe-image-legacy-id--1273477_8.jpg?itok=6VhpTntM",
                 null);
         GetImageFromInt getimage1 = new GetImageFromInt(this);
         getimage1.execute(recipe1);
@@ -189,8 +200,8 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
                 recipe.setRecipeId(cursor.getInt(cursor.getColumnIndex(Recipe.COLUMN_DISHES_ID)));
                 recipe.setDishes_Name(cursor.getString(cursor.getColumnIndex(Recipe.COLUMN_DISHES_NAME)));
                 recipe.setDishes_Description(cursor.getString(cursor.getColumnIndex(Recipe.COLUMN_DISHES_DESCRIPTION)));
+                recipe.setDishes_Ingredients(Arrays.asList(cursor.getString(cursor.getColumnIndex(Recipe.COLUMN_DISHES_INGREDIENTS)).split("\\s*,\\s*")));
                 recipe.setPicture_Url(cursor.getString(cursor.getColumnIndex(Recipe.COLUMN_PICTURE_URL)));
-                // TODO create Blob transfer method
                 recipe.setDishes_Picture(cursor.getBlob(cursor.getColumnIndex(Recipe.COLUMN_DISHES_PICTURE)));
                 recipeList.add(recipe);
             }while (cursor.moveToNext());

@@ -88,7 +88,7 @@ public class Recipe implements Serializable {
         return Dishes_Ingredients;
     }
     public void setDishes_Ingredients(List<String> dishes_Ingredients) {
-        this.Dishes_Ingredients = Dishes_Ingredients;
+        this.Dishes_Ingredients = dishes_Ingredients;
     }
 
     public String getPicture_Url() {
