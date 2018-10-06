@@ -37,8 +37,8 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(Recipe.CREATE_TABLE);
         createRecipe(db);
 
-        GetImageFromInt getimage = new GetImageFromInt(this);
-        getimage.execute(Recipe.IMAGEURL);
+//        GetImageFromInt getimage = new GetImageFromInt(this);
+//        getimage.execute(Recipe.IMAGEURL);
     }
 
 

@@ -27,10 +27,7 @@ public class MenuScreen extends Activity {
         ListView listView = (ListView) findViewById(R.id.myListView);
         List<Recipe> recipeList = myHelper.getAllRecipes();
 
-        for (int iter = 0; iter<myHelper.getRecipesCount();iter++){
-            Recipe recipe = recipeList.get(iter);
-        }
-
+        //populate search screen with list of of recipes
 
         ArrayAdapter<Recipe> arrayAdapter = new ArrayAdapter<Recipe>(
                 this,

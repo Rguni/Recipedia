@@ -80,7 +80,10 @@ public class MainActivity extends AppCompatActivity {
         Intent getSearchScreenIntent = new Intent(this, SearchScreen.class);
 
         final int result = 1;
-        getSearchScreenIntent.putExtra("callingActivity","MainActivity");
+        EditText searchWordET = (EditText) findViewById(R.id.searchWordToSend);
+        String searchWord = String.valueOf(searchWordET.getText());
+
+        getSearchScreenIntent.putExtra("SearchWord",searchWord);
         startActivityForResult(getSearchScreenIntent, result);
     }
 
