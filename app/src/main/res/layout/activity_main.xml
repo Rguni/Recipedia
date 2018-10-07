@@ -8,30 +8,22 @@
     android:orientation="vertical">
 
 
-    <ImageView
-        android:id="@+id/imageView1"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"/>
 
-
-    <ScrollView android:id="@+id/ScrollView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
     <TextView
         android:id="@+id/textView"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Your choice?"
-        android:textSize="20sp"/>
-    </ScrollView>
+        android:text="Welcome to Recipedia!"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:layout_marginTop="10dp"/>
 
-    <LinearLayout
+       <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_gravity="center">
+        android:layout_gravity="center"
+           android:layout_marginTop="100dp">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -55,12 +47,6 @@
             android:layout_height="wrap_content"
             android:text="Enter"
             android:onClick="onSearchButtonClicked"/>
-
-        <TextView
-            android:id="@+id/call_activity_info_txt_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="xxxx"/>
     </LinearLayout>
 
     <LinearLayout
@@ -74,8 +60,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Show all recipes"
-            android:textSize="16sp"
-            />
+            android:textSize="16sp"/>
 
         <Button
             android:layout_width="match_parent"
